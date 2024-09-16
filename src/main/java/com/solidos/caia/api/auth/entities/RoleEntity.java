@@ -2,8 +2,8 @@ package com.solidos.caia.api.auth.entities;
 
 import java.util.List;
 
-import com.solidos.caia.api.auth.enums.RolesEnum;
-import com.solidos.caia.api.common.entiites.AuditMetadata;
+import com.solidos.caia.api.auth.enums.RoleEnum;
+import com.solidos.caia.api.common.entities.AuditMetadata;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -34,7 +34,7 @@ public class RoleEntity {
 
   @Column(name = "role", nullable = false)
   @Enumerated(EnumType.STRING)
-  private RolesEnum role;
+  private RoleEnum role;
 
   @Embedded
   private AuditMetadata auditMetadata;

@@ -54,3 +54,4 @@ INSERT INTO members (user_id, conference_id, role_id, created_at) VALUES (4, 5, 
 INSERT INTO members (user_id, conference_id, role_id, created_at) VALUES (5, 1, 3, NOW());
 INSERT INTO members (user_id, conference_id, role_id, created_at) VALUES (5, 2, 3, NOW());
 INSERT INTO members (user_id, conference_id, role_id, created_at) VALUES (5, 4, 3, NOW());
+-----------------

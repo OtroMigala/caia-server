@@ -1,6 +1,7 @@
 package com.solidos.caia.api.users;
 
 import java.util.Optional;
+import java.io.IOException;
 import java.util.List;
 
 import org.apache.logging.log4j.util.InternalException;
@@ -35,6 +36,7 @@ public class UserService {
    * Creates a new user.
    *
    * @param createUserDto the user to be created, without the id.
+   * @throws IOException
    * @throws ResponseStatusException if the user already exists.
    * @throws InternalException       if there is an error creating the user.
    */
@@ -65,7 +67,7 @@ public class UserService {
     try {
       userRepository.save(userEntity);
     } catch (Exception e) {
-      throw new InternalException("Error creating user", e);
+      throw new InternalException("Error creating user");
     }
   }
 
@@ -73,6 +75,7 @@ public class UserService {
    * Confirms a user.
    *
    * @param token the user's confirmation token.
+   * @throws IOException
    * @throws ResponseStatusException if the user does not exist, or if the user is
    *                                 already confirmed.
    * @throws InternalException       if there is an error confirming the user.
@@ -100,14 +103,27 @@ public class UserService {
     try {
       userRepository.save(userEntity);
     } catch (Exception e) {
-      throw new InternalException("Error confirming user", e);
+      throw new InternalException("Error confirming user");
     }
   }
 
-  public List<UserResumeDto> findByQuery(String query) {
-    Pageable pageable = PageRequest.of(0, 10);
+  public List<UserResumeDto> findByQuery(String query, Integer page, Integer offSet) {
+    if (page == null) {
+      page = 0;
+    }
+
+    if (offSet == null) {
+      offSet = 2;
+    }
+
+    Pageable pageable = PageRequest.of(page, offSet);
+
     if (query == null || query.length() < 3) {
-      return userRepository.findAll().stream().map(u -> UserEntityAdapter.userEntityToUserResume(u)).toList();
+      return userRepository
+          .findAllByIsEnabledTrue(pageable)
+          .stream()
+          .map(u -> UserEntityAdapter.userEntityToUserResume(u))
+          .toList();
     }
 
     return userRepository
@@ -115,4 +131,5 @@ public class UserService {
         .stream()
         .map(u -> UserEntityAdapter.userEntityToUserResume(u)).toList();
   }
+
 }

@@ -1,7 +1,7 @@
 package com.solidos.caia.api.auth.entities;
 
 import com.solidos.caia.api.auth.enums.AuthoritiesEnum;
-import com.solidos.caia.api.common.entiites.AuditMetadata;
+import com.solidos.caia.api.common.entities.AuditMetadata;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;

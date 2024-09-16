@@ -1,7 +1,8 @@
 package com.solidos.caia.api.auth;
 
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,8 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.solidos.caia.api.auth.dto.AuthResponse;
-import com.solidos.caia.api.auth.enums.RolesEnum;
+import com.solidos.caia.api.auth.entities.RoleEntity;
 import com.solidos.caia.api.common.utils.JwtHelper;
+import com.solidos.caia.api.members.entiites.MemberEntity;
 import com.solidos.caia.api.users.entities.UserEntity;
 import com.solidos.caia.api.users.repositories.UserRepository;
 
@@ -41,13 +43,7 @@ public class AuthService implements UserDetailsService {
       throw new UsernameNotFoundException("User not found");
     }
 
-    List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-
-    authorities.add(new SimpleGrantedAuthority("ROLE_" + RolesEnum.AUTHOR.name()));
-
-    authorities.add(new SimpleGrantedAuthority("ROLE_" + RolesEnum.ORGANIZER.name()));
-
-    // authorities.add(new SimpleGrantedAuthority(AuthoritiesEnum.CREATE.name()));
+    Set<SimpleGrantedAuthority> authorities = getAuthorities(user.getMembers());
 
     return new User(
         user.getEmail(),
@@ -57,6 +53,25 @@ public class AuthService implements UserDetailsService {
         user.getCredentialsNoExpired(),
         user.getAccountNoLocked(),
         authorities);
+  }
+
+  public Set<SimpleGrantedAuthority> getAuthorities(List<MemberEntity> memberInfo) {
+
+    Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+
+    memberInfo.stream().forEach(m -> {
+      RoleEntity role = m.getRoleEntity();
+
+      System.out.println(role.getRole().name());
+
+      authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getRole().name()));
+
+      role.getPermissions().stream().forEach(p -> {
+        authorities.add(new SimpleGrantedAuthority(p.getPermission().name()));
+      });
+    });
+
+    return authorities;
   }
 
   public AuthResponse login(String email, String password) {
@@ -87,4 +102,5 @@ public class AuthService implements UserDetailsService {
 
     return new UsernamePasswordAuthenticationToken(email, userDetails.getPassword(), userDetails.getAuthorities());
   }
+
 }

@@ -1,7 +1,8 @@
 package com.solidos.caia.api.members.entiites;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.solidos.caia.api.auth.entities.RoleEntity;
-import com.solidos.caia.api.common.entiites.AuditMetadata;
+import com.solidos.caia.api.common.entities.AuditMetadata;
 import com.solidos.caia.api.conferences.entities.ConferenceEntity;
 import com.solidos.caia.api.users.entities.UserEntity;
 
@@ -29,14 +30,17 @@ public class MemberEntity {
 
   @ManyToOne
   @JoinColumn(name = "user_id", insertable = false, updatable = false)
-  private UserEntity usersEntity;
+  @JsonBackReference
+  private UserEntity userEntity;
 
   @ManyToOne
   @JoinColumn(name = "conference_id", insertable = false, updatable = false)
+  @JsonBackReference
   private ConferenceEntity conferenceEntity;
 
   @ManyToOne
   @JoinColumn(name = "role_id", insertable = false, updatable = false)
+  @JsonBackReference
   private RoleEntity roleEntity;
 
   @Embedded

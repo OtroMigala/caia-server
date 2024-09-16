@@ -1,6 +1,6 @@
 package com.solidos.caia.api.conferences.entities;
 
-import com.solidos.caia.api.common.entiites.AuditMetadata;
+import com.solidos.caia.api.common.entities.AuditMetadata;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;

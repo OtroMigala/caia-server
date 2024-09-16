@@ -13,6 +13,8 @@ import com.solidos.caia.api.users.entities.UserEntity;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
+  List<UserEntity> findAllByIsEnabledTrue(Pageable pageable);
+
   Optional<UserEntity> findByEmail(String email);
 
   Optional<UserEntity> findByToken(String token);

@@ -1,4 +1,4 @@
-package com.solidos.caia.api.common.entiites;
+package com.solidos.caia.api.common.entities;
 
 import java.time.LocalDateTime;
 
