@@ -16,8 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.solidos.caia.api.auth.dto.AuthResponse;
-import com.solidos.caia.api.common.enums.AuthoritiesEnum;
-import com.solidos.caia.api.common.enums.RolesEnum;
+import com.solidos.caia.api.auth.enums.RolesEnum;
 import com.solidos.caia.api.common.utils.JwtHelper;
 import com.solidos.caia.api.users.entities.UserEntity;
 import com.solidos.caia.api.users.repositories.UserRepository;
@@ -48,7 +47,7 @@ public class AuthService implements UserDetailsService {
 
     authorities.add(new SimpleGrantedAuthority("ROLE_" + RolesEnum.ORGANIZER.name()));
 
-    authorities.add(new SimpleGrantedAuthority(AuthoritiesEnum.CREATE.name()));
+    // authorities.add(new SimpleGrantedAuthority(AuthoritiesEnum.CREATE.name()));
 
     return new User(
         user.getEmail(),

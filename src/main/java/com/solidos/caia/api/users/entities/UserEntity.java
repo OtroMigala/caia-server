@@ -34,7 +34,7 @@ public class UserEntity {
   private String email;
 
   @Column(nullable = false)
-  private String afiliation;
+  private String affiliation;
 
   @Column(nullable = false)
   private String password;

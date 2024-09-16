@@ -17,9 +17,9 @@ public class CreateUserDto {
   @Email(message = "Invalid email")
   String email;
 
-  @NotNull(message = "Afiliation cannot be null")
+  @NotNull(message = "Affiliation cannot be null")
   @Size(min = 5, max = 255, message = "Afiliation must be between 5 and 255 characters")
-  String afiliation;
+  String affiliation;
 
   @NotNull(message = "Password cannot be null")
   @Size(min = 6, message = "Password must be at least 6 characters")

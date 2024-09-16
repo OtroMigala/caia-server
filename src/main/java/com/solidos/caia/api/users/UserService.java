@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.solidos.caia.api.common.utils.TokenGenerator;
@@ -19,10 +20,7 @@ import com.solidos.caia.api.users.entities.UserEntity;
 import com.solidos.caia.api.users.entities.UserEntity.UserEntityBuilder;
 import com.solidos.caia.api.users.repositories.UserRepository;
 
-import jakarta.transaction.Transactional;
-
 @Service
-@Transactional
 public class UserService {
 
   private UserRepository userRepository;
@@ -40,6 +38,7 @@ public class UserService {
    * @throws ResponseStatusException if the user already exists.
    * @throws InternalException       if there is an error creating the user.
    */
+  @Transactional
   public void createUser(CreateUserDto createUserDto) {
     Optional<UserEntity> existsUser = userRepository.findByEmail(createUserDto.getEmail());
 
@@ -53,7 +52,7 @@ public class UserService {
         .firstName(createUserDto.getFirstName())
         .lastName(createUserDto.getLastName())
         .email(createUserDto.getEmail())
-        .afiliation(createUserDto.getAfiliation())
+        .affiliation(createUserDto.getAffiliation())
         .password(passwordEncoder.encode(createUserDto.getPassword()))
         .token(TokenGenerator.generate())
         .build();
@@ -78,6 +77,7 @@ public class UserService {
    *                                 already confirmed.
    * @throws InternalException       if there is an error confirming the user.
    */
+  @Transactional
   public void confirm(String token) {
     Optional<UserEntity> user = userRepository.findByToken(token);
 

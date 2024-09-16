@@ -67,7 +67,8 @@ public class UserController {
     return ResponseEntity.ok(commonResponse);
   }
 
-  @GetMapping()
+  @GetMapping
+  @PreAuthorize("hasAnyRole('ORGANIZER')")
   public ResponseEntity<CommonResponse<List<UserResumeDto>>> getUsers(@RequestParam @Nullable String query) {
     List<UserResumeDto> users = userService.findByQuery(query);
 

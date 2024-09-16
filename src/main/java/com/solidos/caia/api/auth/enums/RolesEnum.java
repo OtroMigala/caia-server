@@ -1,4 +1,4 @@
-package com.solidos.caia.api.common.enums;
+package com.solidos.caia.api.auth.enums;
 
 public enum RolesEnum {
   AUTHOR,
