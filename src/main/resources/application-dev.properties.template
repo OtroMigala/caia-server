@@ -1,0 +1,6 @@
+spring.datasource.url=jdbc:postgresql://localhost:5432/{database_name}
+spring.datasource.username={database_user}
+spring.datasource.password={database_password}
+
+security.jwt.key.private={any word}
+security.jwt.user.generator={any word}
