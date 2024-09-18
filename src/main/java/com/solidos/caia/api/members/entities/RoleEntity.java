@@ -1,9 +1,9 @@
-package com.solidos.caia.api.auth.entities;
+package com.solidos.caia.api.members.entities;
 
 import java.util.List;
 
-import com.solidos.caia.api.auth.enums.RoleEnum;
 import com.solidos.caia.api.common.entities.AuditMetadata;
+import com.solidos.caia.api.common.enums.RoleEnum;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;

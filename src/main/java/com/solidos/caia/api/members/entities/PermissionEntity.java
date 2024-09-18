@@ -1,7 +1,7 @@
-package com.solidos.caia.api.auth.entities;
+package com.solidos.caia.api.members.entities;
 
-import com.solidos.caia.api.auth.enums.AuthoritiesEnum;
 import com.solidos.caia.api.common.entities.AuditMetadata;
+import com.solidos.caia.api.common.enums.PermissionsEnum;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -30,7 +30,7 @@ public class PermissionEntity {
 
   @Column(name = "permission", nullable = false)
   @Enumerated(EnumType.STRING)
-  private AuthoritiesEnum permission;
+  private PermissionsEnum permission;
 
   @Embedded
   private AuditMetadata auditMetadata;

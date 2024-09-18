@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.solidos.caia.api.auth.enums.RoleEnumClass;
 import com.solidos.caia.api.common.models.CommonResponse;
 import com.solidos.caia.api.users.dto.CreateUserDto;
 import com.solidos.caia.api.users.dto.UserResumeDto;
@@ -33,7 +32,7 @@ public class UserController {
   }
 
   @GetMapping
-  @PreAuthorize("hasRole('" + RoleEnumClass.ORGANIZER + "')")
+  @PreAuthorize("authenticated")
   public ResponseEntity<CommonResponse<List<UserResumeDto>>> getUsers(
       @RequestParam @Nullable String query,
       @RequestParam @Nullable Integer page,
@@ -42,7 +41,7 @@ public class UserController {
 
     var commonResponse = CommonResponse.<List<UserResumeDto>>builder()
         .status(HttpStatus.OK.value())
-        .message("Users found" + query)
+        .message("Users found")
         .data(users)
         .build();
 

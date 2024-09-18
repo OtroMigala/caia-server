@@ -21,7 +21,7 @@ INSERT INTO permissions (permission, role_id, created_at) VALUES ('CUALIFY_PAPER
 INSERT INTO permissions (permission, role_id, created_at) VALUES ('READ_PAPERS', 3, NOW());
 ------------------
 
---Users
+--Users-----------
 INSERT INTO users (first_name, last_name, email, affiliation, password, token, is_enabled, account_no_expired, account_no_locked, credentials_no_expired) VALUES ('John', 'Doe', 'cristian@email.com', 'Some Affiliation', '$2a$10$5jNphEWJKhYK.kEgaTgpju6/WVrlekyxNgBoOwp.F4/EMSDoj05aa', NULL, TRUE, TRUE, TRUE, TRUE);
 INSERT INTO users (first_name, last_name, email, affiliation, password, token, is_enabled, account_no_expired, account_no_locked, credentials_no_expired) VALUES ('Alice', 'Smith', 'alice@email.com', 'Some Affiliation', '$2a$10$5jNphEWJKhYK.kEgaTgpju6/WVrlekyxNgBoOwp.F4/EMSDoj05aa', NULL, TRUE, TRUE, TRUE, TRUE);
 INSERT INTO users (first_name, last_name, email, affiliation, password, token, is_enabled, account_no_expired, account_no_locked, credentials_no_expired) VALUES ('Bob', 'Johnson', 'bob@email.com', 'Some Affiliation', '$2a$10$5jNphEWJKhYK.kEgaTgpju6/WVrlekyxNgBoOwp.F4/EMSDoj05aa', NULL, TRUE, TRUE, TRUE, TRUE);
@@ -31,11 +31,11 @@ INSERT INTO users (first_name, last_name, email, affiliation, password, token, i
 -------------------
 
 --Conferences
-INSERT INTO conferences (id, name, description, created_at) VALUES (1, 'Conference 1', 'Description 1', NOW());
-INSERT INTO conferences (id, name, description, created_at) VALUES (2, 'Conference 2', 'Description 2', NOW());
-INSERT INTO conferences (id, name, description, created_at) VALUES (3, 'Conference 3', 'Description 3', NOW());
-INSERT INTO conferences (id, name, description, created_at) VALUES (4, 'Conference 4', 'Description 4', NOW());
-INSERT INTO conferences (id, name, description, created_at) VALUES (5, 'Conference 5', 'Description 5', NOW());
+INSERT INTO conferences (id, name, description, slug, created_at) VALUES (1, 'Conference 1', 'Description 1', 'conference-1', NOW());
+INSERT INTO conferences (id, name, description, slug, created_at) VALUES (2, 'Conference 2', 'Description 2', 'conference-2', NOW());
+INSERT INTO conferences (id, name, description, slug, created_at) VALUES (3, 'Conference 3', 'Description 3', 'conference-3', NOW());
+INSERT INTO conferences (id, name, description, slug, created_at) VALUES (4, 'Conference 4', 'Description 4', 'conference-4', NOW());
+INSERT INTO conferences (id, name, description, slug, created_at) VALUES (5, 'Conference 5', 'Description 5', 'conference-5', NOW());
 -------------------
 
 --Members

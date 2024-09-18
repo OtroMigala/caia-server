@@ -3,7 +3,7 @@ package com.solidos.caia.api.users.entities;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.solidos.caia.api.members.entiites.MemberEntity;
+import com.solidos.caia.api.members.entities.MemberEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

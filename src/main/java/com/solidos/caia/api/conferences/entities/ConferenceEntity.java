@@ -33,6 +33,9 @@ public class ConferenceEntity {
   @Column(nullable = false)
   private String description;
 
+  @Column(nullable = false, unique = true)
+  private String slug;
+
   @Embedded
   private AuditMetadata auditMetadata;
 }

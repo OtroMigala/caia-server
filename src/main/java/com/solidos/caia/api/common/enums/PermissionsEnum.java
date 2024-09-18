@@ -1,6 +1,6 @@
-package com.solidos.caia.api.auth.enums;
+package com.solidos.caia.api.common.enums;
 
-public enum AuthoritiesEnum {
+public enum PermissionsEnum {
   MUTATE_CONFERENCES,
   READ_PAPERS,
   READ_AUTHORS,

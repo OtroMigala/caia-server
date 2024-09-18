@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.solidos.caia.api.common.utils.GetSecurityContext;
 import com.solidos.caia.api.common.utils.TokenGenerator;
 import com.solidos.caia.api.users.adapters.UserEntityAdapter;
 import com.solidos.caia.api.users.dto.CreateUserDto;
@@ -108,6 +109,10 @@ public class UserService {
   }
 
   public List<UserResumeDto> findByQuery(String query, Integer page, Integer offSet) {
+    String userEmail = GetSecurityContext.getEmail();
+
+    System.out.println(userEmail);
+
     if (page == null) {
       page = 0;
     }
@@ -120,16 +125,25 @@ public class UserService {
 
     if (query == null || query.length() < 3) {
       return userRepository
-          .findAllByIsEnabledTrue(pageable)
+          .findAllUsers(userEmail, pageable)
           .stream()
           .map(u -> UserEntityAdapter.userEntityToUserResume(u))
           .toList();
     }
 
     return userRepository
-        .findByQuery(query, pageable)
+        .findByQuery(query, userEmail, pageable)
         .stream()
         .map(u -> UserEntityAdapter.userEntityToUserResume(u)).toList();
   }
 
+  public Long findIdByEmail(String email) {
+    Optional<Long> id = userRepository.findIdByEmail(email);
+
+    if (id.isEmpty()) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+    }
+
+    return id.get();
+  }
 }

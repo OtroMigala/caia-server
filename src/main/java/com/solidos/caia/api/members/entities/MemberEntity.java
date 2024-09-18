@@ -1,7 +1,6 @@
-package com.solidos.caia.api.members.entiites;
+package com.solidos.caia.api.members.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.solidos.caia.api.auth.entities.RoleEntity;
 import com.solidos.caia.api.common.entities.AuditMetadata;
 import com.solidos.caia.api.conferences.entities.ConferenceEntity;
 import com.solidos.caia.api.users.entities.UserEntity;
@@ -13,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,6 +23,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class MemberEntity {
 
   @EmbeddedId

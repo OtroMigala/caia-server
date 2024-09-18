@@ -17,9 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.solidos.caia.api.auth.dto.AuthResponse;
-import com.solidos.caia.api.auth.entities.RoleEntity;
 import com.solidos.caia.api.common.utils.JwtHelper;
-import com.solidos.caia.api.members.entiites.MemberEntity;
+import com.solidos.caia.api.members.entities.MemberEntity;
+import com.solidos.caia.api.members.entities.RoleEntity;
 import com.solidos.caia.api.users.entities.UserEntity;
 import com.solidos.caia.api.users.repositories.UserRepository;
 
@@ -61,8 +61,6 @@ public class AuthService implements UserDetailsService {
 
     memberInfo.stream().forEach(m -> {
       RoleEntity role = m.getRoleEntity();
-
-      System.out.println(role.getRole().name());
 
       authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getRole().name()));
 
