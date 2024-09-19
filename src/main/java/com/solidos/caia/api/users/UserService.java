@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.logging.log4j.util.InternalException;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,10 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.solidos.caia.api.common.utils.GetSecurityContext;
+import com.solidos.caia.api.common.utils.PaginationParams;
 import com.solidos.caia.api.common.utils.TokenGenerator;
 import com.solidos.caia.api.users.adapters.UserEntityAdapter;
 import com.solidos.caia.api.users.dto.CreateUserDto;
-import com.solidos.caia.api.users.dto.UserResumeDto;
+import com.solidos.caia.api.users.dto.UserSummaryDto;
 import com.solidos.caia.api.users.entities.UserEntity;
 import com.solidos.caia.api.users.entities.UserEntity.UserEntityBuilder;
 import com.solidos.caia.api.users.repositories.UserRepository;
@@ -108,31 +107,25 @@ public class UserService {
     }
   }
 
-  public List<UserResumeDto> findByQuery(String query, Integer page, Integer offSet) {
+  public List<UserSummaryDto> findByQuery(String query, Integer page, Integer offSet) {
     String userEmail = GetSecurityContext.getEmail();
+    PaginationParams paginationParams = PaginationParams.withQuery(page, offSet, query);
 
-    System.out.println(userEmail);
-
-    if (page == null) {
-      page = 0;
-    }
-
-    if (offSet == null) {
-      offSet = 2;
-    }
-
-    Pageable pageable = PageRequest.of(page, offSet);
-
-    if (query == null || query.length() < 3) {
+    if (paginationParams.getQuery() == null || paginationParams.getQuery().length() < 3) {
       return userRepository
-          .findAllUsers(userEmail, pageable)
+          .findAllUsers(
+              userEmail,
+              paginationParams.getPageable())
           .stream()
           .map(u -> UserEntityAdapter.userEntityToUserResume(u))
           .toList();
     }
 
     return userRepository
-        .findByQuery(query, userEmail, pageable)
+        .findByQuery(
+            userEmail,
+            paginationParams.getQuery(),
+            paginationParams.getPageable())
         .stream()
         .map(u -> UserEntityAdapter.userEntityToUserResume(u)).toList();
   }

@@ -1,9 +1,12 @@
 package com.solidos.caia.api.members;
 
+import java.util.List;
+
 import org.apache.logging.log4j.util.InternalException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.solidos.caia.api.common.enums.RoleEnum;
 import com.solidos.caia.api.members.dto.CreateMemberDto;
 import com.solidos.caia.api.members.entities.MemberComposeId;
 import com.solidos.caia.api.members.entities.MemberEntity;
@@ -41,4 +44,12 @@ public class MemberService {
       throw new InternalException("Error creating member");
     }
   }
+
+  public List<MemberEntity> findByRole(Long userId, RoleEnum role) {
+    return memberRepository.findAllByUserId(userId)
+        .stream()
+        .filter(m -> m.getRoleEntity().getRole() == role)
+        .toList();
+  }
+
 }

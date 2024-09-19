@@ -1,9 +1,11 @@
 package com.solidos.caia.api.auth;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.HashSet;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.solidos.caia.api.auth.dto.AuthResponse;
 import com.solidos.caia.api.common.utils.JwtHelper;

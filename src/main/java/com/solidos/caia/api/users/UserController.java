@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.solidos.caia.api.common.models.CommonResponse;
 import com.solidos.caia.api.users.dto.CreateUserDto;
-import com.solidos.caia.api.users.dto.UserResumeDto;
+import com.solidos.caia.api.users.dto.UserSummaryDto;
 
 import jakarta.annotation.Nullable;
 
@@ -33,19 +33,19 @@ public class UserController {
 
   @GetMapping
   @PreAuthorize("authenticated")
-  public ResponseEntity<CommonResponse<List<UserResumeDto>>> getUsers(
+  public ResponseEntity<CommonResponse<List<UserSummaryDto>>> getUsers(
       @RequestParam @Nullable String query,
       @RequestParam @Nullable Integer page,
       @RequestParam @Nullable Integer offSet) {
-    List<UserResumeDto> users = userService.findByQuery(query, page, offSet);
+    List<UserSummaryDto> usersDto = userService.findByQuery(query, page, offSet);
 
-    var commonResponse = CommonResponse.<List<UserResumeDto>>builder()
+    var users = CommonResponse.<List<UserSummaryDto>>builder()
         .status(HttpStatus.OK.value())
         .message("Users found")
-        .data(users)
+        .data(usersDto)
         .build();
 
-    return ResponseEntity.ok(commonResponse);
+    return ResponseEntity.ok(users);
   }
 
   /**
