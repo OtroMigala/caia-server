@@ -1,11 +1,8 @@
 package com.solidos.caia.api.auth;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.HashSet;
+import java.util.ArrayList;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,36 +14,36 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.solidos.caia.api.auth.dto.AuthResponse;
+import com.solidos.caia.api.common.utils.GetSecurityContext;
 import com.solidos.caia.api.common.utils.JwtHelper;
-import com.solidos.caia.api.members.entities.MemberEntity;
-import com.solidos.caia.api.members.entities.RoleEntity;
+import com.solidos.caia.api.users.UserService;
 import com.solidos.caia.api.users.entities.UserEntity;
 import com.solidos.caia.api.users.repositories.UserRepository;
 
 @Service
 public class AuthService implements UserDetailsService {
   private PasswordEncoder passwordEncoder;
-  private UserRepository userRepository;
+  private UserService userService;
   private JwtHelper jwtHelper;
 
-  public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtHelper jwtHelper) {
-    this.userRepository = userRepository;
+  public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtHelper jwtHelper,
+      UserService userService) {
     this.passwordEncoder = passwordEncoder;
     this.jwtHelper = jwtHelper;
+    this.userService = userService;
   }
 
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-    UserEntity user = userRepository.findByEmail(email)
-        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    UserEntity user = userService.findByEmail(email);
 
     if (!user.getIsEnabled()) {
       throw new UsernameNotFoundException("User not found");
     }
 
-    Set<SimpleGrantedAuthority> authorities = getAuthorities(user.getMembers());
+    List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+    authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
     return new User(
         user.getEmail(),
@@ -56,23 +53,6 @@ public class AuthService implements UserDetailsService {
         user.getCredentialsNoExpired(),
         user.getAccountNoLocked(),
         authorities);
-  }
-
-  public Set<SimpleGrantedAuthority> getAuthorities(List<MemberEntity> memberInfo) {
-
-    Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-
-    memberInfo.stream().forEach(m -> {
-      RoleEntity role = m.getRoleEntity();
-
-      authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getRole().name()));
-
-      role.getPermissions().stream().forEach(p -> {
-        authorities.add(new SimpleGrantedAuthority(p.getPermission().name()));
-      });
-    });
-
-    return authorities;
   }
 
   public AuthResponse login(String email, String password) {
@@ -104,4 +84,11 @@ public class AuthService implements UserDetailsService {
     return new UsernamePasswordAuthenticationToken(email, userDetails.getPassword(), userDetails.getAuthorities());
   }
 
+  public Long getUserIdByEmail() {
+    String userEmail = GetSecurityContext.getEmail();
+
+    Long userId = userService.findIdByEmail(userEmail);
+
+    return userId;
+  }
 }

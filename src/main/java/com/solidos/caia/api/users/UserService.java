@@ -139,4 +139,14 @@ public class UserService {
 
     return id.get();
   }
+
+  public UserEntity findByEmail(String email) {
+    Optional<UserEntity> user = userRepository.findByEmail(email);
+
+    if (user.isEmpty()) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+    }
+
+    return user.get();
+  }
 }

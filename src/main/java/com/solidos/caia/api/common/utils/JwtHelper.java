@@ -3,11 +3,9 @@ package com.solidos.caia.api.common.utils;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import com.auth0.jwt.JWT;
@@ -29,13 +27,10 @@ public class JwtHelper {
     Algorithm algorithm = Algorithm.HMAC256(this.privateKey);
 
     String email = auth.getPrincipal().toString();
-    String authorities = auth.getAuthorities().stream().map(GrantedAuthority::getAuthority)
-        .collect(Collectors.joining(","));
 
     return JWT.create()
         .withIssuer(this.userGenerator)
         .withSubject(email)
-        .withClaim("authorities", authorities)
         .withIssuedAt(new Date())
         .withExpiresAt(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24)))
         .withJWTId(UUID.randomUUID().toString())

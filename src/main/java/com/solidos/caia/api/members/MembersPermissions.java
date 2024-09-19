@@ -6,30 +6,27 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.solidos.caia.api.auth.AuthService;
 import com.solidos.caia.api.common.enums.RoleEnum;
-import com.solidos.caia.api.common.utils.GetSecurityContext;
 import com.solidos.caia.api.members.entities.MemberComposeId;
 import com.solidos.caia.api.members.entities.MemberEntity;
 import com.solidos.caia.api.members.repositories.MemberRepository;
 import com.solidos.caia.api.members.repositories.RoleRepository;
-import com.solidos.caia.api.users.UserService;
 
 @Service
 public class MembersPermissions {
   private MemberRepository memberRepository;
-  private UserService userService;
+  private AuthService authService;
   private RoleRepository roleRepository;
 
-  public MembersPermissions(MemberRepository memberRepository, UserService userService, RoleRepository roleRepository) {
+  public MembersPermissions(MemberRepository memberRepository, AuthService authService, RoleRepository roleRepository) {
     this.memberRepository = memberRepository;
-    this.userService = userService;
+    this.authService = authService;
     this.roleRepository = roleRepository;
   }
 
   public Long hasConferencePermission(Long conferenceId, RoleEnum role) {
-    String userEmail = GetSecurityContext.getEmail();
-
-    Long userId = userService.findIdByEmail(userEmail);
+    Long userId = authService.getUserIdByEmail();
 
     if (userId == null) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");

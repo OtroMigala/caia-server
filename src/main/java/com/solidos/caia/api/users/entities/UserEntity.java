@@ -1,17 +1,10 @@
 package com.solidos.caia.api.users.entities;
 
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.solidos.caia.api.members.entities.MemberEntity;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -64,7 +57,8 @@ public class UserEntity {
   @Column(name = "credentials_no_expired", columnDefinition = "boolean default false", nullable = false)
   private Boolean credentialsNoExpired = false;
 
-  @OneToMany(targetEntity = MemberEntity.class, fetch = FetchType.LAZY, mappedBy = "userEntity")
-  @JsonManagedReference
-  private List<MemberEntity> members;
+  // @OneToMany(targetEntity = MemberEntity.class, fetch = FetchType.LAZY,
+  // mappedBy = "userEntity")
+  // @JsonManagedReference
+  // private List<MemberEntity> members;
 }

@@ -31,7 +31,7 @@ public class MemberEntity {
 
   @ManyToOne
   @JoinColumn(name = "user_id", insertable = false, updatable = false)
-  @JsonBackReference
+  // @JsonBackReference
   private UserEntity userEntity;
 
   @ManyToOne

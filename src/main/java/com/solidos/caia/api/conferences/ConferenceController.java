@@ -4,13 +4,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.solidos.caia.api.auth.AuthService;
 import com.solidos.caia.api.common.enums.RoleEnum;
 import com.solidos.caia.api.common.models.CommonResponse;
-import com.solidos.caia.api.common.utils.GetSecurityContext;
 import com.solidos.caia.api.conferences.dto.ConferenceSummaryDto;
 import com.solidos.caia.api.conferences.dto.CreateConferenceDto;
 import com.solidos.caia.api.conferences.entities.ConferenceEntity;
-import com.solidos.caia.api.users.UserService;
 
 import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
@@ -31,18 +30,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class ConferenceController {
 
   private ConferenceService conferenceService;
-  private UserService userService;
+  private AuthService authService;
 
   public ConferenceController(
       ConferenceService conferenceService,
-      UserService userService) {
+      AuthService authService) {
     this.conferenceService = conferenceService;
-    this.userService = userService;
+    this.authService = authService;
   }
 
   @GetMapping("/{idOrSlug}")
+  @PreAuthorize("permitAll()")
   public ResponseEntity<CommonResponse<ConferenceEntity>> getConference(@PathVariable String idOrSlug) {
-
     var conference = conferenceService.findByIdOrSlug(idOrSlug);
 
     var commonResponse = CommonResponse.<ConferenceEntity>builder()
@@ -57,9 +56,7 @@ public class ConferenceController {
   @GetMapping("/by-role/{role}")
   public ResponseEntity<CommonResponse<List<ConferenceSummaryDto>>> findConferencesByRole(
       @PathVariable @Valid RoleEnum role) {
-    String userEmail = GetSecurityContext.getEmail();
-
-    Long userId = userService.findIdByEmail(userEmail);
+    Long userId = authService.getUserIdByEmail();
 
     var commonResponse = CommonResponse.<List<ConferenceSummaryDto>>builder()
         .status(HttpStatus.OK.value())

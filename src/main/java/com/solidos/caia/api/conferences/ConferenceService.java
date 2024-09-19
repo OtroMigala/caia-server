@@ -2,11 +2,10 @@ package com.solidos.caia.api.conferences;
 
 import java.util.List;
 
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.solidos.caia.api.auth.AuthService;
 import com.solidos.caia.api.common.enums.RoleEnum;
 import com.solidos.caia.api.common.utils.PaginationParams;
 import com.solidos.caia.api.common.utils.SlugGenerator;
@@ -18,29 +17,25 @@ import com.solidos.caia.api.conferences.repositories.ConferenceRepository;
 import com.solidos.caia.api.members.MemberService;
 import com.solidos.caia.api.members.dto.CreateMemberDto;
 import com.solidos.caia.api.members.entities.MemberEntity;
-import com.solidos.caia.api.users.UserService;
 
 @Service
 public class ConferenceService {
   private ConferenceRepository conferenceRepository;
   private MemberService memberService;
-  private UserService userService;
+  private AuthService authService;
 
   public ConferenceService(
       ConferenceRepository conferenceRepository,
       MemberService memberService,
-      UserService userService) {
+      AuthService authService) {
     this.conferenceRepository = conferenceRepository;
     this.memberService = memberService;
-    this.userService = userService;
+    this.authService = authService;
   }
 
   @Transactional
   public ConferenceEntity createConference(CreateConferenceDto createConferenceDto) {
-    SecurityContext authentication = SecurityContextHolder.getContext();
-    String userEmail = authentication.getAuthentication().getPrincipal().toString();
-
-    Long userId = userService.findIdByEmail(userEmail);
+    Long userId = authService.getUserIdByEmail();
 
     ConferenceEntity newConference = conferenceRepository.save(
         ConferenceEntity.builder()
