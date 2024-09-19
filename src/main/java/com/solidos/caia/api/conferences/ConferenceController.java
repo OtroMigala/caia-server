@@ -8,6 +8,7 @@ import com.solidos.caia.api.auth.AuthService;
 import com.solidos.caia.api.common.enums.RoleEnum;
 import com.solidos.caia.api.common.models.CommonResponse;
 import com.solidos.caia.api.conferences.dto.ConferenceSummaryDto;
+import com.solidos.caia.api.conferences.dto.ConferencesByRoleDto;
 import com.solidos.caia.api.conferences.dto.CreateConferenceDto;
 import com.solidos.caia.api.conferences.entities.ConferenceEntity;
 
@@ -55,19 +56,32 @@ public class ConferenceController {
 
   @GetMapping("/by-role/{role}")
   public ResponseEntity<CommonResponse<List<ConferenceSummaryDto>>> findConferencesByRole(
-      @PathVariable @Valid RoleEnum role) {
+      @PathVariable @Valid RoleEnum role,
+      @RequestParam @Nullable String query,
+      @RequestParam @Nullable Integer page,
+      @RequestParam @Nullable Integer offSet) {
     Long userId = authService.getUserIdByEmail();
+
+    ConferencesByRoleDto conferencesByRoleDto = ConferencesByRoleDto
+        .builder()
+        .query(query)
+        .page(page)
+        .offSet(offSet)
+        .role(role)
+        .userId(userId)
+        .build();
 
     var commonResponse = CommonResponse.<List<ConferenceSummaryDto>>builder()
         .status(HttpStatus.OK.value())
         .message("Conferences found")
-        .data(conferenceService.findConferencesByRole(userId, role))
+        .data(conferenceService.findConferencesByRole(conferencesByRoleDto))
         .build();
 
     return ResponseEntity.ok(commonResponse);
   }
 
   @GetMapping
+  @PreAuthorize("permitAll()")
   public ResponseEntity<CommonResponse<List<ConferenceSummaryDto>>> findAllConferences(
       @RequestParam @Nullable String query,
       @RequestParam @Nullable Integer page,

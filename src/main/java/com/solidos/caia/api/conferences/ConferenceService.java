@@ -11,6 +11,7 @@ import com.solidos.caia.api.common.utils.PaginationParams;
 import com.solidos.caia.api.common.utils.SlugGenerator;
 import com.solidos.caia.api.conferences.apdaptes.ConferenceEntityAdapter;
 import com.solidos.caia.api.conferences.dto.ConferenceSummaryDto;
+import com.solidos.caia.api.conferences.dto.ConferencesByRoleDto;
 import com.solidos.caia.api.conferences.dto.CreateConferenceDto;
 import com.solidos.caia.api.conferences.entities.ConferenceEntity;
 import com.solidos.caia.api.conferences.repositories.ConferenceRepository;
@@ -64,7 +65,6 @@ public class ConferenceService {
           .map(ConferenceEntityAdapter::toConferenceSummary)
           .toList();
     }
-    System.out.println(paginationParams.getQuery());
 
     return conferenceRepository
         .findAllConferences(
@@ -91,10 +91,21 @@ public class ConferenceService {
         .orElseThrow(() -> new IllegalArgumentException("Conference not found"));
   }
 
-  public List<ConferenceSummaryDto> findConferencesByRole(Long userId, RoleEnum role) {
-    List<MemberEntity> members = memberService.findByRole(userId, role);
+  public List<ConferenceSummaryDto> findConferencesByRole(ConferencesByRoleDto data) {
+    PaginationParams pagParams = PaginationParams.withQuery(data.getPage(), data.getOffSet(), data.getQuery());
+
+    List<MemberEntity> members = memberService.findByRole(
+        data.getUserId(),
+        data.getRole(),
+        pagParams.getPageable());
+
+    if (data.getQuery() == null || data.getQuery().length() < 3) {
+      return members.stream()
+          .map(m -> ConferenceEntityAdapter.toConferenceSummary(m.getConferenceEntity())).toList();
+    }
 
     return members.stream()
+        .filter(m -> m.getConferenceEntity().getName().contains(data.getQuery()))
         .map(m -> ConferenceEntityAdapter.toConferenceSummary(m.getConferenceEntity())).toList();
   }
 }

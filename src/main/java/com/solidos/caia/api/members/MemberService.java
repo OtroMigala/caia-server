@@ -3,6 +3,7 @@ package com.solidos.caia.api.members;
 import java.util.List;
 
 import org.apache.logging.log4j.util.InternalException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,8 +46,8 @@ public class MemberService {
     }
   }
 
-  public List<MemberEntity> findByRole(Long userId, RoleEnum role) {
-    return memberRepository.findAllByUserId(userId)
+  public List<MemberEntity> findByRole(Long userId, RoleEnum role, Pageable pageable) {
+    return memberRepository.findAllByUserId(userId, pageable)
         .stream()
         .filter(m -> m.getRoleEntity().getRole() == role)
         .toList();
