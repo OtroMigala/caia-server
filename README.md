@@ -1,4 +1,4 @@
-# Proyecto Spring Boot
+# C.A.I.A
 
 Este es un proyecto de Spring Boot que utiliza Java 17 y PostgreSQL como base de datos.
 
@@ -77,3 +77,16 @@ Una vez configurado el archivo `application-dev.properties`, puedes ejecutar el 
 
 - **Perfil de desarrollo**: El perfil activo es dev, lo cual es útil para configurar entornos locales y de pruebas.
 - **Versión de Java**: Este proyecto está basado en Java 17. Asegúrate de que tu entorno esté configurado correctamente.
+
+## CAIA – Crisis And Indecision Assembly
+
+Bienvenido a CAIA, el sistema de gestión de conferencias que nadie pidió, pero que todos necesitan (aunque no lo admitan). Aquí podrás organizar, revisar y discutir ensayos en un ambiente de caos cuidadosamente estructurado. Porque ¿quién no disfruta de una buena crisis académica?
+
+Características principales:
+
+- **Gestión de usuarios**: Porque todos necesitan un título, incluso si es irrelevante.
+- **Subida de ensayos**: Porque escribir un paper de última hora es una tradición.
+- **Asignación de revisores**: O cómo pasarle el trabajo a alguien más.
+- **Revisión de ensayos**: Donde el feedback es vago y las expectativas son altas.
+
+Contribuciones son bienvenidas, pero advertidos quedan: aquí nada tiene sentido… y está bien.
