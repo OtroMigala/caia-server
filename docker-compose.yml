@@ -1,0 +1,32 @@
+services:
+  usersdb:
+    container_name: users_db
+    image: postgres:16.4
+    volumes:
+      - db-vol1:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    restart: always
+    environment:
+      POSTGRES_USER: users
+      POSTGRES_PASSWORD: users
+      POSTGRES_DB: users
+
+  conferencesdb:
+    container_name: conferences_db
+    image: postgres:16.4
+    volumes:
+      - db-vol2:/var/lib/postgresql/data
+    ports:
+      - 5433:5432
+    restart: always
+    environment:
+      POSTGRES_USER: conferences
+      POSTGRES_PASSWORD: conferences
+      POSTGRES_DB: conferences
+
+volumes:
+  db-vol1:
+    external: false
+  db-vol2:
+    external: false
