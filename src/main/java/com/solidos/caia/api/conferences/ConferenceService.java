@@ -21,14 +21,11 @@ import com.solidos.caia.api.members.entities.MemberEntity;
 
 @Service
 public class ConferenceService {
-  private ConferenceRepository conferenceRepository;
-  private MemberService memberService;
-  private AuthService authService;
+  private final ConferenceRepository conferenceRepository;
+  private final MemberService memberService;
+  private final AuthService authService;
 
-  public ConferenceService(
-      ConferenceRepository conferenceRepository,
-      MemberService memberService,
-      AuthService authService) {
+  public ConferenceService(ConferenceRepository conferenceRepository,MemberService memberService, AuthService authService) {
     this.conferenceRepository = conferenceRepository;
     this.memberService = memberService;
     this.authService = authService;

@@ -1,5 +1,14 @@
 package com.solidos.caia.api.conferences;
 
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,30 +24,19 @@ import com.solidos.caia.api.conferences.entities.ConferenceEntity;
 import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
 
-import java.util.List;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-
 @RestController
 @RequestMapping("/conferences")
 @PreAuthorize("authenticated")
 public class ConferenceController {
 
-  private ConferenceService conferenceService;
-  private AuthService authService;
+  private final ConferenceService conferenceService;
+  private final AuthService authService;
 
-  public ConferenceController(
-      ConferenceService conferenceService,
-      AuthService authService) {
+  public ConferenceController(ConferenceService conferenceService, AuthService authService) {
     this.conferenceService = conferenceService;
     this.authService = authService;
   }
+
 
   @GetMapping("/{idOrSlug}")
   @PreAuthorize("permitAll()")
@@ -97,17 +95,16 @@ public class ConferenceController {
   }
 
   @PostMapping
-  public ResponseEntity<CommonResponse<ConferenceEntity>> postMethodName(
-      @RequestBody CreateConferenceDto createConferenceDto) {
+  @PreAuthorize("hasRole('ORGANIZER')")
+  public ResponseEntity<CommonResponse<ConferenceEntity>> createConference(@Valid @RequestBody CreateConferenceDto createConferenceDto) {
+      ConferenceEntity newConference = conferenceService.createConference(createConferenceDto);
+      
+      var commonResponse = CommonResponse.<ConferenceEntity>builder()
+          .status(HttpStatus.CREATED.value())
+          .message("Conference created successfully")
+          .data(newConference)
+          .build();
 
-    ConferenceEntity newConference = conferenceService.createConference(createConferenceDto);
-
-    var commonResponse = CommonResponse.<ConferenceEntity>builder()
-        .status(HttpStatus.CREATED.value())
-        .message("Conference created successfully")
-        .data(newConference)
-        .build();
-
-    return ResponseEntity.status(HttpStatus.CREATED).body(commonResponse);
+      return ResponseEntity.status(HttpStatus.CREATED).body(commonResponse);
   }
 }

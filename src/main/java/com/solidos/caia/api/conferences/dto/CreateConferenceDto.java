@@ -1,18 +1,16 @@
 package com.solidos.caia.api.conferences.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
 public class CreateConferenceDto {
-  @NotBlank(message = "Name cannot be blank")
-  @NotNull(message = "Name cannot be null")
-  private String name;
+    @NotBlank(message = "Name cannot be blank")
+    @Size(max = 255, message = "Name must be at most 255 characters long")
+    private String name;
 
-  @NotBlank(message = "Description cannot be blank")
-  @NotNull(message = "Description cannot be null")
-  @Size(min = 5, max = 255, message = "Description must be between 5 and 255 characters")
-  private String description;
+    @NotBlank(message = "Description cannot be blank")
+    @Size(max = 1000, message = "Description must be at most 1000 characters long")
+    private String description;
 }
